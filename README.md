@@ -1,10 +1,10 @@
-# Project Title
+# Tire Compound Impact in Formula One
 
-Write a 1-2 sentences that quickly and clearly convey what your repo is for.
+This repository is a data analysis project that compares tire compounds to lap times for the Hungarian Grand Prix in 2024. How does tire compound affect lap times during a race?
 
 ## Overview
 
-Expand on those introductory sentences with a brief but informative description of your project's purpose and goals. This section should help visitors decide whether they should dig deeper into your repo/project.
+Our goal is to explore the relationship between tire compounds and lap times. We compare three compounds(soft, medium, and hard) to determine how effective they are for a driver's pace. 
 
 ### Interesting Insight (Optional)
 
@@ -12,7 +12,7 @@ This is optional but highly recommended. You'll include one interesting insight 
 
 ## Data Sources and Acknowledgements
 
-Be sure to list where you got any data used within the project. Be sure to acknowledge any one whose work or elements you're drawing upon.
+The data comes from the [OpenF1](https://openf1.org/) website. It contains historical and real time data for each session over a race weekend.
 
 ## Current Plan
 
@@ -20,9 +20,10 @@ Provide some information about what you intend to doe with the project. You can 
 
 ## Repo Structure
 
-Use this section to explain the structure of your repo. This should help visitors quickly figure out where they should look to find certain elements. Further, you can use this space to highlight and briefly explain important/key files in the repo.
-
+All files will be found in the top level and without any sub folders.
 
 ## Authors
 
-Give information about who are the authors of the project and how people can get in touch if they have questions.
+Kathryn Sujai, Elisabeth Hazic, Ellie Wallace
+
+For further information about this project, please contact [Elisabeth Hadzic](mailto:elisabeth.hadzic@gmail.com)
