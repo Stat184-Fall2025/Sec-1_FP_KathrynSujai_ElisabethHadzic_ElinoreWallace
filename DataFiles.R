@@ -6,12 +6,14 @@ library(tidyverse)
 # Import the Stint data
 response <- GET('https://api.openf1.org/v1/stints?meeting_key=1241') # meeting key 1241 = Hungary 2024
 stint_data <- fromJSON(content(response, 'text'))
-print(stint_data)
 
 # Import the Lap data
 response1 <- GET('https://api.openf1.org/v1/laps?meeting_key=1241')
 laps_data <- fromJSON(content(response1, 'text'))
-print(laps_data)
+
+# Import Driver Data
+response3 <- GET('https://api.openf1.org/v1/drivers?meeting_key=1241&session_key=9566')
+drivers_data <- fromJSON(content(response3, 'text'))
 
 
 # Clean the Stint Data
@@ -41,9 +43,20 @@ laps_data_clean <- laps_data %>%
     lap_duration
   )
 
+# Clean the Driver Data
+driver_data_clean <- drivers_data %>%
+  select(
+    driver_number,
+    team_name,
+    first_name,
+    last_name
+  )
+
 # Join the data
 laps_stints_data <- laps_data_clean %>%
-  left_join(stint_data_clean, by = "driver_number", relationship = "many-to-many") %>% # join on driver number
+  left_join(stint_data_clean, by = "driver_number", relationship = "many-to-many") %>%
+  left_join(driver_data_clean, by = "driver_number") %>% # join on driver number
   filter(lap_number >= lap_start & lap_number <= lap_end) # assign lap time to correct stint
+
 
   
