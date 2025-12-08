@@ -28,6 +28,9 @@ stint_data_clean <- stint_data %>%
     lap_end,
     compound,
     tyre_age_at_start
+  ) %>%
+  mutate(
+    stint_length = (lap_end + 1) - lap_start # create a stint_length column
   )
 
 # Clean the Laps Data
@@ -45,7 +48,7 @@ laps_data_clean <- laps_data %>%
 
 # Clean the Driver Data
 driver_data_clean <- drivers_data %>%
-  select(
+  select( # Select needed columns
     driver_number,
     team_name,
     first_name,
