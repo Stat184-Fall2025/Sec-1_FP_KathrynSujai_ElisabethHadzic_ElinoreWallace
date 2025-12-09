@@ -13,4 +13,10 @@ laps_stints_data %>%
   ) %>%
   ggplot(aes(x=stint_lap, y=lap_duration, color = compound)) + # map the aesthetics
   geom_smooth(se = FALSE) +
-  theme_minimal()
+  theme_minimal() +
+  labs(
+    title = "Lap Time vs. Tire Age by Tire Compound",
+    x = "Laps into Stint",
+    y = "Lap Time",
+    color = "Compound"
+  )
