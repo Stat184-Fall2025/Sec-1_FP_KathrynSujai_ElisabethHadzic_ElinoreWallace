@@ -11,12 +11,12 @@ laps_stints_data %>%
   mutate(
     stint_lap = row_number() - 1, # resets the stint lap number to 1 for each new stint
   ) %>%
-  ggplot(aes(x=stint_lap, y=lap_duration, color = compound)) + # map the aesthetics
+  ggplot(aes(x=stint_lap, y=lap_duration, color = compound, linetype = compound)) + # map the aesthetics
   geom_smooth(se = FALSE) + # smooths the line
   theme_minimal() +
   labs( # Adds labels to the plot
     title = "Average Lap Time vs. Tire Age by Tire Compound",
-    x = "Laps into Stint",
+    x = "Tire Age",
     y = "Lap Time",
     color = "Compound"
   )
