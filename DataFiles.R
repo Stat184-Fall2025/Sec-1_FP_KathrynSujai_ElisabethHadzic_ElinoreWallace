@@ -48,11 +48,11 @@ laps_data_clean <- laps_data %>%
 
 # Clean the Driver Data
 driver_data_clean <- drivers_data %>%
+  mutate(driver = paste(first_name, last_name, sep = " ")) %>% # Combine first and last name columns
   select( # Select needed columns
     driver_number,
     team_name,
-    first_name,
-    last_name
+    driver
   )
 
 # Join the data
