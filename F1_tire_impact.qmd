@@ -1,6 +1,6 @@
 ---
-title: "Formula 1 Tire Impact"
-subtitle: "An analysis of F1 Tire Compound Impact in a Race"
+title: "The Impact of Formula 1 Tire Compounds"
+subtitle: "An analysis of F1 Tire Compound Impact at the 2024 Hungarian Grand Prix"
 author: "Kathryn Sujai, Ellie Wallace, Elisabeth Hadzic"
 date: "December 15, 2025"
 format:
@@ -15,12 +15,52 @@ execute:
   error: false
 editor: visual
 ---
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+source("DataFiles.R")
+```
 
 # Overview
+Tire compound selection plays a crucial role in Formula 1 race strategy, directly affecting lap time, tire degradation, and overall race performance. However, the effectiveness of each compound can vary significantly depending on track characteristics and race conditions.
+
+This analysis investigates which tire compound performed best at the 2024 Hungarian Grand Prix. Using lap time and stint data, we examine how tire performance changes with tire age, ___, and __ by comparing lap times achieved by each driver on different compounds.
+
+The results show that the medium compound consistently outperformed the soft and hard compounds at this race, while the soft compound performed poorly overall.
 
 # Visualizations
 
-## Fig 1
+## Tire Age and Lap Time Relationship
+
+```{r}
+#| label: fig-LapTime_TireAge
+#| fig-cap: "Average Lap Time vs. Tire Age By Compound Line Chart"
+#| fig-pos: "H"
+#| fig-alt: "A line chart showing the average lap time for each compound based on its tire age. The three compounds are soft, medium, and hard, each represented by a different line. The tire age (x) ranges from 0 to 40 laps. The lap time (y) ranges from 84 to 87 seconds. The lines show that soft tires last about 10 laps, medium about 30, and hard about 40. The lap time increases for each compound after 10 laps. Soft compound is the slowest."
+
+# Lap Time vs. Tire Age Visualization
+
+# 1: Load needed packages
+library(tidyverse)
+library(ggplot2)
+
+# 2:Create the line plot
+laps_stints_data %>%
+  group_by(driver_number, stint_number) %>% # group by driver and stint
+  arrange(lap_number) %>%
+  mutate(
+    stint_lap = row_number() - 1, # resets the stint lap number to 1 for each new stint
+  ) %>%
+  ggplot(aes(x=stint_lap, y=lap_duration, color = compound, linetype = compound)) + # map the aesthetics
+  geom_smooth(se = FALSE) + # smooths the line
+  theme_minimal() +
+  labs( # Adds labels to the plot
+    title = "Average Lap Time vs. Tire Age by Tire Compound",
+    x = "Tire Age",
+    y = "Lap Time",
+    color = "Compound"
+  )
+```
+
+@fig-LapTime_TireAge displays the relationship between average lap time and tire age for each tire compound (soft, medium, hard). Tire age is measured as the number of laps completed on a specific set of tires. The values were calculated by averaging lap times at each tire age across all stints using that compound. The figure illustrates distinct length patterns for each compound. Soft tires last about 10 laps, medium about 30 laps, and hard up to 40 laps. Lower points on the line represent faster lap times, while spikes and upward trends represent slower times and drop in tire performance. Softer tires are expected to be the fastest compound, however, at this race, it was the slowest on average. Medium tires performed the best overall, reaching its peak at 10 laps. Hard tires were moderate, remaining consistent between soft and medium. Overall, we learn that at the Hungarian Grand Prix, the soft compound was relatively ineffective, making it a less desirable option for race performance. In contrast, the medium compound provided the best balance of speed and durability, emerging as the optimal tire choice for this race.
 
 ## Fig 2
 
@@ -28,10 +68,57 @@ editor: visual
 
 # Tables
 
-## Table 1
+## Driver's Fastest Lap on Each Compound
+
+```{r}
+#| label: tbl-FastestLapCompound
+#| tbl-cap: "Fastest Lap on Each Compound"
+#| tbl-pos: "H"
+#| html-table-processing: none
+#| lst-label: lst-table1
+#| lst-cap: "Code Chunk for Making Table"
+#| 
+# Driver's fastest lap per compound table
+
+# 1: Load needed packages
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+
+# 2: Filter for medium tires and find fastest laps
+compound_fastest <- laps_stints_data %>%
+  filter(compound %in% c("SOFT", "MEDIUM", "HARD")) %>%  # filter 3 compounds
+  mutate(compound = factor(compound, levels = c("SOFT", "MEDIUM", "HARD"))) %>% # to stay in order
+  group_by(driver, compound) %>% # group by driver and compound
+  summarise(
+    fastest_lap = min(lap_duration, na.rm = TRUE), # take min lap time for fastest
+    #.groups = "drop"
+  ) %>%
+  pivot_wider(
+    names_from = compound,
+    values_from = fastest_lap
+  )
+
+# 3: Create the table with kableExtra
+compound_fastest %>%
+  kable(
+    caption = "Driver's Fastest Lap on each Compound", # add title
+    col.names = c("Driver", "Soft", "Medium", "Hard"), # apply column names
+    align = c("l", "c", "c", "c"),
+    booktabs = TRUE,
+  ) %>%
+  kableExtra::kable_classic(
+    font_size = 15,
+    lightable_options = "striped" # style type
+  )
+```
+
+@tbl-FastestLapCompound displays the fastest lap for each driver on each compound they competed with. All drivers completed at least one stint on the medium compound, and the majority also used the hard compound. Furthermore, only 6 drivers recorded laps on the soft compound. Across nearly all drivers, the medium compound produced the fastest lap times compared to the other compounds. For drivers who used multiple compounds, their quickest lap was typically set on medium tires. In contrast, the soft compound generally resulted in slower fastest lap times when compared to medium and even hard tires. This further supports the earlier findings that the soft compound underperformed at the 2024 Hungarian Grand Prix, despite its reputation as the fastest tire. Overall, the table strengthens the conclusion that the medium compound was the most effective tire choice for achieving peak lap performance, while the soft compound was the least competitive option in this race. 
 
 ## Table 2
 
 ## Table 3
 
 # Code Appendix
+```{r codeAppend, ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
+```
