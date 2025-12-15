@@ -1,4 +1,5 @@
 # Lap Time vs. Tire Age Visualization
+# Author: Elisabeth Hadzic
 
 # 1: Load needed packages
 library(tidyverse)

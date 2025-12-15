@@ -15,20 +15,25 @@ execute:
   error: false
 editor: visual
 ---
+
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
-source("DataFiles.R")
+source("Data/DataFiles.R")
 ```
 
-# Overview
+# Introduction and Race Context
+
 Tire compound selection plays a crucial role in Formula 1 race strategy, directly affecting lap time, tire degradation, and overall race performance. However, the effectiveness of each compound can vary significantly depending on track characteristics and race conditions.
 
-This analysis investigates which tire compound performed best at the 2024 Hungarian Grand Prix. Using lap time and stint data, we examine how tire performance changes with tire age, ___, and __ by comparing lap times achieved by each driver on different compounds.
+This analysis investigates which tire compound performed best at the 2024 Hungarian Grand Prix. Using lap time and stint data, we examine how tire performance changes with tire age, lap time, and compound by comparing lap times achieved by each driver on different compounds.
 
 The results show that the medium compound consistently outperformed the soft and hard compounds at this race, while the soft compound performed poorly overall.
 
-# Visualizations
+To understand tire performance at the Hungarian Grand Prix, we first examine how lap times evolve as tires age. We then compare each driver’s fastest laps across compounds and finally discuss strategic insights for optimizing tire choice during the race.
 
-## Tire Age and Lap Time Relationship
+# Tire Performance Overview
+
+## How Tire Age Affects Lap Time
+Tire age strongly influences lap time, as tires degrade and lose grip over more laps completed. Examining this relationship helps identify which compound maintains optimal performance and for how long.
 
 ```{r}
 #| label: fig-LapTime_TireAge
@@ -37,6 +42,7 @@ The results show that the medium compound consistently outperformed the soft and
 #| fig-alt: "A line chart showing the average lap time for each compound based on its tire age. The three compounds are soft, medium, and hard, each represented by a different line. The tire age (x) ranges from 0 to 40 laps. The lap time (y) ranges from 84 to 87 seconds. The lines show that soft tires last about 10 laps, medium about 30, and hard about 40. The lap time increases for each compound after 10 laps. Soft compound is the slowest."
 
 # Lap Time vs. Tire Age Visualization
+# Author: Elisabeth Hadzic
 
 # 1: Load needed packages
 library(tidyverse)
@@ -62,13 +68,11 @@ laps_stints_data %>%
 
 @fig-LapTime_TireAge displays the relationship between average lap time and tire age for each tire compound (soft, medium, hard). Tire age is measured as the number of laps completed on a specific set of tires. The values were calculated by averaging lap times at each tire age across all stints using that compound. The figure illustrates distinct length patterns for each compound. Soft tires last about 10 laps, medium about 30 laps, and hard up to 40 laps. Lower points on the line represent faster lap times, while spikes and upward trends represent slower times and drop in tire performance. Softer tires are expected to be the fastest compound, however, at this race, it was the slowest on average. Medium tires performed the best overall, reaching its peak at 10 laps. Hard tires were moderate, remaining consistent between soft and medium. Overall, we learn that at the Hungarian Grand Prix, the soft compound was relatively ineffective, making it a less desirable option for race performance. In contrast, the medium compound provided the best balance of speed and durability, emerging as the optimal tire choice for this race.
 
-## Fig 2
+While @fig-LapTime_TireAge shows general trends by compound, the next section explores individual driver performance to see how these trends relate to fastest laps on each tire.
 
-## Fig 3
+## Comparing Drivers' Fastest Laps by Compound
 
-# Tables
-
-## Driver's Fastest Lap on Each Compound
+Different drivers may show different performance from the same tire compound due to driving style and stint strategy. Comparing their fastest laps highlights both individual differences and the overall effectiveness of each compound.
 
 ```{r}
 #| label: tbl-FastestLapCompound
@@ -79,6 +83,7 @@ laps_stints_data %>%
 #| lst-cap: "Code Chunk for Making Table"
 #| 
 # Driver's fastest lap per compound table
+# Author: Elisabeth Hadzic
 
 # 1: Load needed packages
 library(tidyverse)
@@ -92,7 +97,6 @@ compound_fastest <- laps_stints_data %>%
   group_by(driver, compound) %>% # group by driver and compound
   summarise(
     fastest_lap = min(lap_duration, na.rm = TRUE), # take min lap time for fastest
-    #.groups = "drop"
   ) %>%
   pivot_wider(
     names_from = compound,
@@ -113,12 +117,31 @@ compound_fastest %>%
   )
 ```
 
-@tbl-FastestLapCompound displays the fastest lap for each driver on each compound they competed with. All drivers completed at least one stint on the medium compound, and the majority also used the hard compound. Furthermore, only 6 drivers recorded laps on the soft compound. Across nearly all drivers, the medium compound produced the fastest lap times compared to the other compounds. For drivers who used multiple compounds, their quickest lap was typically set on medium tires. In contrast, the soft compound generally resulted in slower fastest lap times when compared to medium and even hard tires. This further supports the earlier findings that the soft compound underperformed at the 2024 Hungarian Grand Prix, despite its reputation as the fastest tire. Overall, the table strengthens the conclusion that the medium compound was the most effective tire choice for achieving peak lap performance, while the soft compound was the least competitive option in this race. 
+@tbl-FastestLapCompound displays the fastest lap for each driver on each compound they competed with. All drivers completed at least one stint on the medium compound, and the majority also used the hard compound. Furthermore, only 6 drivers recorded laps on the soft compound. Across nearly all drivers, the medium compound produced the fastest lap times compared to the other compounds. For drivers who used multiple compounds, their quickest lap was typically set on medium tires.The soft compound generally resulted in slower fastest lap times when compared to medium and even hard tires. This further supports the earlier findings as seen in @fig-LapTime_TireAge, that the soft compound underperformed at the 2024 Hungarian Grand Prix, despite its reputation as the fastest tire. Overall, the table strengthens the conclusion that the medium compound was the most effective tire choice for achieving peak lap performance, while the soft compound was the least competitive option in this race.
+
+## Fig 2
+
+## Fig 3
+
 
 ## Table 2
 
 ## Table 3
 
+# Race Strategy Insights and Conclusions
+Combining insights from tire age trends and driver lap times, we can conclude implications for race strategy. The data suggest which compounds offered the best balance of speed and durability, and how teams could optimize their tire choices during the race.
+
+**Medium Compound Dominance:** The medium tire compound provided the best overall lap times and consistent performance across stints.
+
+**Soft Compound Underperformance:** Despite expectations, soft tires did not yield the fastest laps due to rapid degradation at the Hungarian track. They led the slowest.
+
+**Hard Compound Consistency:** Hard tires were slower than medium tires but provided longer stints. They are preferred in longer runs.
+
+**Race Strategy Implications:** Optimal race strategy at the Hungarian Grand Prix involved prioritizing medium tires for key performance windows, while using hard tires for longevity and soft tires sparingly.
+
+Overall, the data creates a clear narrative: medium tires were the optimal choice at this race, balancing speed and durability, while the other compounds were either too fragile (soft) or too slow (hard) for maximum performance.
+
 # Code Appendix
+
 ```{r codeAppend, ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
 ```

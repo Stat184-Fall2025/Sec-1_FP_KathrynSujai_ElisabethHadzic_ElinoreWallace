@@ -1,3 +1,6 @@
+# Data Wrangling
+# Author: Elisabeth Hadzic
+
 # Load Needed Packages
 library(httr)
 library(jsonlite)

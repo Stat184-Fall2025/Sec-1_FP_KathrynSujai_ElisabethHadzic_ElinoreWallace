@@ -1,4 +1,5 @@
 # Driver's fastest lap per compound table
+# Author: Elisabeth Hadzic
 
 # 1: Load needed packages
 library(tidyverse)
