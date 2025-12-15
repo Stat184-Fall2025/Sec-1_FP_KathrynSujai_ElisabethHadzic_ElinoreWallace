@@ -15,8 +15,8 @@ execute:
   error: false
 editor: visual
 ---
-```{r setup}
-source("scripts/DataFiles.R")
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+source("DataFiles.R")
 ```
 
 # Overview
