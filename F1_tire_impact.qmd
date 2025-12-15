@@ -1,0 +1,37 @@
+---
+title: "Formula 1 Tire Impact"
+subtitle: "An analysis of F1 Tire Compound Impact in a Race"
+author: "Kathryn Sujai, Ellie Wallace, Elisabeth Hadzic"
+date: "December 15, 2025"
+format:
+  pdf:
+    geometry: "margin=1in"
+    toc: false
+    fig-cap-location: top
+    tbl-cap-location: top
+execute:
+  echo: false
+  warning: false
+  error: false
+editor: visual
+---
+
+# Overview
+
+# Visualizations
+
+## Fig 1
+
+## Fig 2
+
+## Fig 3
+
+# Tables
+
+## Table 1
+
+## Table 2
+
+## Table 3
+
+# Code Appendix
