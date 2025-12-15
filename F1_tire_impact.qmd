@@ -1,6 +1,6 @@
 ---
 title: "The Impact of Formula 1 Tire Compounds"
-subtitle: "An analysis of F1 Tire Compound Impact at the 2024 Hungarian Grand Prix"
+subtitle: "An Analysis of F1 Tire Compound Impact at the 2024 Hungarian Grand Prix"
 author: "Kathryn Sujai, Ellie Wallace, Elisabeth Hadzic"
 date: "December 15, 2025"
 format:
@@ -140,6 +140,13 @@ Combining insights from tire age trends and driver lap times, we can conclude im
 **Race Strategy Implications:** Optimal race strategy at the Hungarian Grand Prix involved prioritizing medium tires for key performance windows, while using hard tires for longevity and soft tires sparingly.
 
 Overall, the data creates a clear narrative: medium tires were the optimal choice at this race, balancing speed and durability, while the other compounds were either too fragile (soft) or too slow (hard) for maximum performance.
+
+# Author Contribution
+- **Kathryn Sujai:** 
+- **Ellie Wallace:** 
+- **Elisabeth Hadzic:** Data collection, cleaning, and wrangling. Figure 1 and Table 1 creation. 
+
+All authors contributed to creation of work-in-progress presentation and final report.
 
 # Code Appendix
 
