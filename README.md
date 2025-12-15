@@ -10,8 +10,7 @@ Our goal is to explore the relationship between tire compounds and lap times. We
 
 Soft tires are known for their short tire age/stint length but there quick speeds. This analysis, however, provided the opposite. The soft tires still lasted the shortest but looking at the figure below, we see that the soft tire was the slowest of the three compounds on average. The quickest average lap time for soft, was slower than both the hard and medium which is uncommon. We can conclude that the soft tire is not an opitmal choice for the Hungarian Grand Prix.
 
-![Avg. Lap Time vs. Tire Age]("Tables and Figures/AvgLapTime_TireAge.png")
-
+<img src="Tables_and_Figures/AvgLapTime_TireAge.png" alt="Average Lap Time by Tire Age" width="500">
 
 ## Data Sources and Acknowledgements
 
