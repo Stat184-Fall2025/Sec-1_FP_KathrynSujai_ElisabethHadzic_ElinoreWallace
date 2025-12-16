@@ -14,7 +14,7 @@ Soft tires are known for their short tire age/stint length but there quick speed
 
 ## Data Sources and Acknowledgements
 
-The data comes from an open-source API [OpenF1](https://openf1.org/). It contains historical and real time F1 data. For our data, we combined driver data, lap data, and stint data. 
+The data comes from an open-source API [OpenF1](https://openf1.org/). It contains historical and real time F1 data. For our data, we combined driver data, lap data, and stint data. There were 2 issues in the data: lap 1 having incomplete data and outlaps having significantly higher lap time. We removed rows for lap 1 because it didn't count as a full lap and was N/A. We removed outlaps because they were outliers and not a fair and accurate representation of lap time on a compound.
 
 ## Current Plan
 
@@ -34,7 +34,7 @@ With this data, we plan to showcase the relationship between tire compounds to l
 
 ## Repo Structure
 
-All files will be found in the top level. The data files and code can be found in the "Data" folder. The visulizations and tables code can be found in the "Figures and Tables" folder.
+All files will be found in the top level. The data files and code can be found in the "Data" folder. The visualizations and tables code can be found in the "Tables_and_Figures" folder.
 
 ## Authors
 
