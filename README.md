@@ -18,7 +18,19 @@ The data comes from an open-source API [OpenF1](https://openf1.org/). It contain
 
 ## Current Plan
 
-Provide some information about what you intend to doe with the project. You can additionally refer the visitor to your detailed plan document.
+With this data, we plan to showcase the relationship between tire compounds to lap times in Formula 1 racing. This will include a QMD file showing various data visualizations and tables. We will explore the impact of the tire type on lap time, when tire age and compound is at its peak, and how it impacts attaining both the fastest lap and finishing top 5 in the race. To do this we will
+    - load the data into R
+    - join the data
+    - tidy the data
+    - filter the data depending on what aspect of the data is being analyized
+    - create data visualizations and tables
+    - improve the visalizations and tables 
+    - create the work in progress power point
+    - present the power point in class
+    - make any needed edits to data visualizations and data tables
+    - create the QMD and add it into the repository
+    - add the pdf form of the QMD into the repository
+    
 
 ## Repo Structure
 
