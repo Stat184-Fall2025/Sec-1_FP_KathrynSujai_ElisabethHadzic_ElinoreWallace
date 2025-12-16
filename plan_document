@@ -1,0 +1,26 @@
+Goal: Create a repository showcasing the relationship between tire compounds to
+      lap times in Formula 1 racing. This will include a QMD file showing
+      various data visualizations and tables.
+
+Needs: Data from OpenF1 website, Github, RStudio, packages such as tidyverse,
+       ggplot2, dplyer, ggplot2, kableExtra, knitr.
+       
+Plan: 
+    - create repository
+    - create dev branches for each member
+    - find a topic 
+    - access the data
+    - check to make sure the data is valid
+    - load the data into R
+    - join the data
+    - tidy the data
+    - filter the data depending on what aspect of the data is being analyized
+    - create data visualizations and tables
+    - improve the visalizations and tables 
+    - create the work in progress power point
+    - present the power point in class
+    - make any needed edits to data visualizations and data tables
+    - create the QMD and add it into the repository
+    - add the pdf form of the QMD into the repository
+    
+    
