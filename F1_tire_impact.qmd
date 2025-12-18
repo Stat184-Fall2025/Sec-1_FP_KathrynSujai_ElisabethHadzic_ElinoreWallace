@@ -403,7 +403,7 @@ stint_comparison %>% #creates a clean table using Kable of the compound types
 
 ```
 
-@tbl-compound_type_and_laps displays each tire compound, it's minimum laps completed, maximum laps completed, average lap lengths, and how many times it was used. Based on the graph, the soft tires has an average length of 7.33, mediums had an average of 18.38, and hard had an average of 29 laps. So the hard tires were able to last longer as compared to the soft tire. The table also shows that the soft tires have a smaller range of minimum laps completed and maximum in comparison to hard tires which were in use for 41 laps. Due to the hard tires being used the most with 30 total, it is assumed that hard tires are the most reliable in comparison to soft and even medium tires.
+@tbl-compound_type_and_laps displays each tire compound, it's minimum laps completed, maximum laps completed, average lap lengths, and how many times it was used. Based on the graph, the soft tires has an average length of 7.33, mediums had an average of 18.38, and hard had an average of 29 laps. So the hard tires were able to last longer as compared to the soft tire. The table also shows that the soft tires have a smaller range of minimum laps completed and maximum in comparison to hard tires which were in use for 41 laps. Due to the hard tires being used the most with 30 total, it is assumed that hard tires are the most reliable in comparison to soft and even medium tires. Similarly, soft tires are the least used with only 6 total uses throughout the entire race.
 
 # Race Strategy Insights and Conclusions
 
