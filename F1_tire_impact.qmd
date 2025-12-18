@@ -129,6 +129,7 @@ Drivers use different tire compounds in a race to get the fastest lap. Softest t
 #| fig-cap: "Lap Time vs Lap Number by Compound of Top 5 Fastest Drivers"
 #| fig-pos: "H"
 #| fig-alt: "Five line graphs showing lap times for Perez, Russell, Sainz, Sargeant, and Verstappen with thier tire compounds used being shown by color an linetype. The tire compounds are hard, medium, and soft and a change in tires can be seen by a break in the line. Lap number (x) ranges from 0 to 70 and lap duration (y) ranges from 80 to 90 seconds. Hard tires can be seen as solid blue lines, medium are seen as dashed red lines, and soft can be seen as green lines that have longer dashes."
+#| fig-height: 14
 
 # Load Needed Packages
 library(ggplot2)
@@ -234,7 +235,7 @@ Of all drivers who had the top fastest lap times recorded, there is great variat
 #| html-table-processing: none
 #| lst-label: lst-table1
 #| lst-cap: "Code Chunk for Making Table"
-#| 
+#| fig-height: 12
 # Load Needed Packages
 library(kableExtra)
 library(knitr)
