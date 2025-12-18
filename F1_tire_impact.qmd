@@ -95,6 +95,7 @@ library(knitr)
 compound_fastest <- laps_stints_data %>%
   filter(compound %in% c("SOFT", "MEDIUM", "HARD")) %>%  # filter 3 compounds
   mutate(compound = factor(compound, levels = c("SOFT", "MEDIUM", "HARD"))) %>% # to stay in order
+  mutate(driver = paste(first_name, last_name)) %>% # Combines driver name into one
   group_by(driver, compound) %>% # group by driver and compound
   summarise(
     fastest_lap = min(lap_duration, na.rm = TRUE), # take min lap time for fastest
@@ -230,10 +231,10 @@ Of all drivers who had the top fastest lap times recorded, there is great variat
 
 ```{r}
 #| label: tbl-FastestLapCompoundDistribution
-#| tbl-cap: "Distribtuion of Drivers wiht the Fastest Lap on Each Compound"
+#| tbl-cap: "Distribution of Drivers wiht the Fastest Lap on Each Compound"
 #| tbl-pos: "H"
 #| html-table-processing: none
-#| lst-label: lst-table1
+#| lst-label: lst-table2
 #| lst-cap: "Code Chunk for Making Table"
 #| fig-height: 12
 # Load Needed Packages
@@ -344,7 +345,7 @@ Each tire has a different time when it begins to stop producing desired lap time
 #| tbl-cap: "Summary of Relationship Between Compound Type and Lap Lengths"
 #| tbl-pos: "H"
 #| html-table-processing: none
-#| lst-label: lst-table1
+#| lst-label: lst-table3
 #| lst-cap: "Code Chunk for Making Table"
 
 # Compound vs Lap Length
@@ -397,7 +398,7 @@ stint_comparison %>% #creates a clean table using Kable of the compound types
     digits = 2
   ) %>%
   kable_classic(
-    font_size = 15,
+    font_size = 8,
     lightable_options = "striped"
   )
 
