@@ -11,13 +11,11 @@ ggplot( #create a graph that shows optimum tire age
     y = lap_duration,
     color = compound
   ) 
-  ) +
-    geom_smooth(se = FALSE) + #line of best fit
-    labs(
-      title = "Comparison of Optimized Tire Age by Coumpound",
-      x = "Lap Number",
-      y = "Lap Times",
-      color = "Compound Types"
-    )
-  
-  
+) +
+  geom_smooth(se = FALSE) + #line of best fit
+  labs(
+    title = "Comparison of Optimized Tire Age by Coumpound",
+    x = "Lap Number",
+    y = "Lap Times",
+    color = "Compound Types"
+  )

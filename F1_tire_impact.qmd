@@ -312,7 +312,7 @@ Overall, the data creates a clear narrative: medium tires were the optimal choic
 # Author Contribution
 
 -   **Kathryn Sujai:**
--   **Ellie Wallace:**
+-   **Ellie Wallace:** Plan document, Figure 2 and table 2 creation. 
 -   **Elisabeth Hadzic:** Data collection, cleaning, and wrangling. Figure 1 and Table 1 creation.
 
 All authors contributed to creation of work-in-progress presentation and final report.
