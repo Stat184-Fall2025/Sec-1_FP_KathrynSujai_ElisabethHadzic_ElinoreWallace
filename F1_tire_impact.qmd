@@ -223,7 +223,7 @@ fastest_lap %>%
 
 @fig-FastestLapCompound displays the 5 different drivers who had the 5 fastest laps in the Hungarian Grand Prix of 2024. Peaks in lines show a slower lap, while dips show a faster lap. All tire compounds were used in this sample, with soft tires being used the least overall. Among these 5 drivers, there is more variation in lap time, stints, stint number, and tire compound. The fastest lap time came from using soft tires, which happened right after Sargeant pitted for the third time in this race and switched. This is not a pattern followed by the other drivers. Overall, you can see that medium and soft achieved a faster lap, but the last third of the race was the fasted overall. An interesting thing to note about this graph is the fact that Sargeant went from having the slowest lap time, with hard compound tires, to the fastest lap time, with soft compound tires. Medium tires still showed the best performance, as supported by @fig-LapTime_TireAge, as those lines are overall lower than than the hard compound. It can also be seen that at the end of the race, when drivers are looking to get a faster lap, most drivers change to medium or soft. This was successful for Sargeant, as he achieved the fasted lap at the end of the race.
 
-## Comparing Distribution of Lap Times 
+## Comparing Distribution of Lap Times
 
 Of all drivers who had the top fastest lap times recorded, there is great variation in lap number and what compound was used. Showing the distribution of lap time for each driver on each compound highlights the effectiveness of each tire and how variable each compound is.
 
@@ -294,6 +294,116 @@ fastest_lap_table%>%
 
 @tbl-FastestLapCompoundDistribution displays various numbers showing the distribution of lap times for each driver and the compounds they used. All drivers used only medium and hard tires, except for Sargeant who used all three types of tire compound. For almost all drivers, the minimum lap time for medium tires was lower then the minimum time for hard tires. The average times for both tire compounds varied from driver to driver, with no specific compound out of the two having a lower lap time. To compare the overall performance of each tire, examine @fig-LapTime_TireAge, which will show the average of each tire compound for all drivers. The fastest lap was achieved by soft tires, with the mean being the lowest recorded. However it must be taken into account that this stint with the soft tires, as seen in @fig-FastestLapCompound, was the shortest recorded, and was the only driver who changed to soft tires, so there is no other driver data in the top 5 fastest lap to compare it to. Overall, it can be seen that medium tires are more effective for sustaining fast laps over longer periods of time in this race.
 
+## Relationship Between Tires and Optimum Age
+
+Each tire compound has it's own strengths and weaknesses. Each tire compound wear differently and will produce fastest lap times at different stages of a stint. Soft's are often a their peak earlier in a stint while hard take longer to reach optimum speed. However, this can change from circuit to circuit.
+
+```{r}
+#| label: fig-optimized_tire_age
+#| fig-cap: "Comparison of Optimized Tire Age by Compound"
+#| fig-pos: "H"
+#| fig-alt: "A line graph that has three lines representing three tire compound types. The tire types include softs in blue, medium in green, and hard in red. The x-acis displays Lap-Numbers and ranges from 0 to 30. The y-axis displays Lap Times from 80 to 90. The graph show three concave up parabolas and the hard tire line peaks at around 20 laps, soft tire line peaks around 10 laps, and the medium tire line peaks a little aftter 10 laps. Overall, it proves that softs peak faster but wear out quicker and hards peak later but last longer."
+
+# Optimum Tire Age Visualization
+# Author: Kathy Sujai 
+library(ggplot2)
+library(tidyverse)
+
+stint1_data <- laps_stints_data %>% #create new dataframe with only stint 1 data
+  filter(stint_number == 1) 
+
+ggplot( #create a graph that shows optimum tire age
+  stint1_data,
+  mapping = aes(
+    x = lap_number,
+    y = lap_duration,
+    color = compound
+  ) 
+) +
+  geom_smooth(se = FALSE) + #line of best fit
+  labs(
+    title = "Comparison of Optimized Tire Age by Compound",
+    x = "Lap Number",
+    y = "Lap Times",
+    color = "Compound Types"
+  )
+
+```
+
+@fig-optimized_tire_age displays three lines representing the tire compounds hard, soft, and medium. Through this graph, it is seen that soft tires quickly reach their optimum age as it hits the fastest lap at around 10 laps in, but it decreases almost immediately after. The medium tires takes around the same time as soft's to reach their peak, but it stays consistent around 12 laps where it has similar lap times. The mediums also produce the fastest overall times out of all three compounds. It does not decrease instantly after reaching a peak, but in a slower rate that increases its usability as age increases. Finally, the hard tires don't reach a true peak but show two small peaks where they improve lap times at right before 15 laps and then a little after 15 laps. Hard tires produced the slowest overall lap times out of the three compound. They also take the longest time to reach their optimum age and take longer to start producing slower times.
+
+Therefore, based on the graph, the optimum tire age for each compound is as follows: Softs reach their optimum age at around 11 laps in and immediately decrease after that. Mediums reach their optimum age at around 12 laps in, but unlike softs they stay consistent longer and start decreasing later and slower. Finally, hard's are at their optimum around 15 laps in and also stay consistent and take the least amount of time to begin decreasing.
+
+## Compound Type and Lap Data
+
+Each tire has a different time when it begins to stop producing desired lap times, this is when the pit-wall knows its time to switch tires. Hard compounds are known to last longer and soft compounds usually ware out quicker.
+
+```{r}
+#| label: tbl-compound_type_and_laps
+#| tbl-cap: "Summary of Relationship Between Compound Type and Lap Lengths"
+#| tbl-pos: "H"
+#| html-table-processing: none
+#| lst-label: lst-table1
+#| lst-cap: "Code Chunk for Making Table"
+
+# Compound vs Lap Length
+# Author: Kathy Sujai 
+# Load Needed Packages
+library(kableExtra)
+library(knitr)
+library(tidyverse)
+
+
+stint_softs <- stint_data_clean %>% #create a new data-frame for soft tire compounds
+  filter(compound == "SOFT") %>% #filters out only data for soft tires
+  summarise( #finds the min lap length, max lap length, and average tire age, and total used
+    compound = "SOFT",
+    Min = min(stint_length, na.rm = TRUE),
+    Max = max(stint_length, na.rm = TRUE),
+    Mean = mean(stint_length, na.rm = TRUE),
+    count = n()
+  )
+
+stint_mediums <- stint_data_clean %>% #create a new data-frame for medium tire compounds
+  filter(compound == "MEDIUM") %>% #filters out only data for medium tires
+  summarise(
+    compound = "MEDIUM",
+    Min = min(stint_length, na.rm = TRUE),
+    Max = max(stint_length, na.rm = TRUE),
+    Mean = mean(stint_length, na.rm = TRUE),
+    count = n()
+  )
+
+stint_hards <- stint_data_clean %>% #create a new data-frame for hard tire compounds
+  filter(compound == "HARD") %>% #filters out only data for hard tires
+  summarise(
+    compound = "HARD",
+    Min = min(stint_length, na.rm = TRUE),
+    Max = max(stint_length, na.rm = TRUE),
+    Mean = mean(stint_length, na.rm = TRUE),
+    count = n()
+  )
+
+stint_comparison <- bind_rows( #creates a new dataframe with all three tire compound
+  stint_softs, stint_mediums, stint_hards
+)
+  
+stint_comparison %>% #creates a clean table using Kable of the compound types
+  kable(
+    caption = "Summary of Relationship Between Compound Type and Lap Lengths",
+    col.names = c("Compound", "Minimum Laps Completed", "Maximum Laps Completed", "Average Lap Length", "Total Tires Used"),
+    align = c("l", "c", "c", "c"),
+    digits = 2
+  ) %>%
+  kable_classic(
+    font_size = 15,
+    lightable_options = "striped"
+  )
+
+```
+
+@tbl-compound_type_and_laps displays each tire compound, it's minimum laps completed, maximum laps completed, average lap lengths, and how many times it was used. Based on the graph, the soft tires has an average length of 7.33, mediums had an average of 18.38, and hard had an average of 29 laps. So the hard tires were able to last longer as compared to the soft tire. The table also shows that the soft tires have a smaller range of minimum laps completed and maximum in comparison to hard tires which were in use for 41 laps. Due to the hard tires being used the most with 30 total, it is assumed that hard tires are the most reliable in comparison to soft and even medium tires.
+
 # Race Strategy Insights and Conclusions
 
 Combining insights from tire age trends and driver lap times, we can conclude implications for race strategy. The data suggest which compounds offered the best balance of speed and durability, and how teams could optimize their tire choices during the race.
@@ -310,8 +420,8 @@ Overall, the data creates a clear narrative: medium tires were the optimal choic
 
 # Author Contribution
 
--   **Kathryn Sujai:**
--   **Ellie Wallace:** Plan document, Figure 2 and table 2 creation. 
+-   **Kathryn Sujai:** GitHub page, Figure 3 and table 3 creation.
+-   **Ellie Wallace:** Plan document, Figure 2 and table 2 creation.
 -   **Elisabeth Hadzic:** Data collection, cleaning, and wrangling. Figure 1 and Table 1 creation.
 
 All authors contributed to creation of work-in-progress presentation and final report.

@@ -40,7 +40,7 @@ stint_comparison <- bind_rows( #creates a new dataframe with all three tire comp
   
 stint_comparison %>% #creates a clean table using Kable of the compound types
   kable(
-    caption = "Summary of Compound Type and Laps",
+    caption = "Summary of Relationship Between Compound Type and Lap Lengths",
     col.names = c("Compound", "Minimum Laps Completed", "Maximum Laps Completed", "Average Lap Length", "Total Tires Used"),
     align = c("l", "c", "c", "c"),
     digits = 2
