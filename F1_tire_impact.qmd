@@ -33,6 +33,7 @@ To understand tire performance at the Hungarian Grand Prix, we first examine how
 # Tire Performance Overview
 
 ## How Tire Age Affects Lap Time
+
 Tire age strongly influences lap time, as tires degrade and lose grip over more laps completed. Examining this relationship helps identify which compound maintains optimal performance and for how long.
 
 ```{r}
@@ -119,16 +120,182 @@ compound_fastest %>%
 
 @tbl-FastestLapCompound displays the fastest lap for each driver on each compound they competed with. All drivers completed at least one stint on the medium compound, and the majority also used the hard compound. Furthermore, only 6 drivers recorded laps on the soft compound. Across nearly all drivers, the medium compound produced the fastest lap times compared to the other compounds. For drivers who used multiple compounds, their quickest lap was typically set on medium tires.The soft compound generally resulted in slower fastest lap times when compared to medium and even hard tires. This further supports the earlier findings as seen in @fig-LapTime_TireAge, that the soft compound underperformed at the 2024 Hungarian Grand Prix, despite its reputation as the fastest tire. Overall, the table strengthens the conclusion that the medium compound was the most effective tire choice for achieving peak lap performance, while the soft compound was the least competitive option in this race.
 
-## Fig 2
+## Drivers with the Fastest Lap's Compounds Over Time
 
-## Fig 3
+Drivers use different tire compounds in a race to get the fastest lap. Softest tires are usually known to get the fastest speeds, but don't last as long as a hard tire compound. This can vary from race to race, as tracks and weather can impact lap times as well.
+
+```{r}
+#| label: fig-FastestLapCompound
+#| fig-cap: "Lap Time vs Lap Number by Compound of Top 5 Fastest Drivers"
+#| fig-pos: "H"
+#| fig-alt: "Five line graphs showing lap times for Perez, Russell, Sainz, Sargeant, and Verstappen with thier tire compounds used being shown by color an linetype. The tire compounds are hard, medium, and soft and a change in tires can be seen by a break in the line. Lap number (x) ranges from 0 to 70 and lap duration (y) ranges from 80 to 90 seconds. Hard tires can be seen as solid blue lines, medium are seen as dashed red lines, and soft can be seen as green lines that have longer dashes."
+
+# Load Needed Packages
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+library(httr)
+library(jsonlite)
+
+# Import the Stint data
+response <- GET('https://api.openf1.org/v1/stints?meeting_key=1241') # meeting key 1241 = Hungary 2024
+stint_data <- fromJSON(content(response, 'text'))
+
+# Import the Lap data
+response1 <- GET('https://api.openf1.org/v1/laps?meeting_key=1241')
+laps_data <- fromJSON(content(response1, 'text'))
+
+# Import Driver Data
+response3 <- GET('https://api.openf1.org/v1/drivers?meeting_key=1241&session_key=9566')
+drivers_data <- fromJSON(content(response3, 'text'))
 
 
-## Table 2
+# Clean the Stint Data
+stint_data_clean <- stint_data %>%
+  filter(
+    session_key == 9566 # filter for the race session only
+  ) %>%
+  select( # Select needed columns
+    stint_number,
+    driver_number,
+    lap_start,
+    lap_end,
+    compound,
+    tyre_age_at_start
+  ) %>%
+  mutate(
+    stint_length = (lap_end + 1) - lap_start # create a stint_length column
+  )
 
-## Table 3
+# Clean the Laps Data
+laps_data_clean <- laps_data %>%
+  filter(
+    session_key == 9566, # filter for the race session only
+    lap_number != 1, # remove lap 1 due to incomplete data 
+    is_pit_out_lap == FALSE # remove outlaps to prevent outliers
+  ) %>%
+  select( # Select needed columns
+    driver_number,
+    lap_number,
+    lap_duration
+  )
+
+# Clean the Driver Data
+driver_data_clean <- drivers_data %>%
+  select( # Select needed columns
+    driver_number,
+    team_name,
+    first_name,
+    last_name
+  )
+
+# Join the data
+laps_stints_data_clean <- laps_data_clean %>%
+  left_join(stint_data_clean, by = "driver_number", relationship = "many-to-many") %>%
+  left_join(driver_data_clean, by = "driver_number") %>% # join on driver number
+  filter(lap_number >= lap_start & lap_number <= lap_end) # assign lap time to correct stint
+
+# Edit data to make specific to fastest drivers
+fastest_lap <- laps_stints_data_clean %>%
+  filter(last_name %in% c("Russell", "Sargeant", "Verstappen", "Perez", "Sainz")) 
+
+# Create the data visualization
+fastest_lap %>%
+  ggplot( #select data
+    mapping = aes( #assign variables
+      x = lap_number,
+      y = lap_duration,
+      color = compound,
+      linetype = compound,
+      group = stint_number
+    )
+  ) +
+  geom_path() + #create line plot
+  labs( #add labels
+    title = "Duration of Lap Overtime of the Race",
+    x = "Lap Number",
+    y = "Lap Time (seconds)"
+  ) +
+  facet_wrap(vars(last_name), ncol = 1) + #create one vertical panel per driver
+  scale_color_manual(values = c("HARD" = "blue", "MEDIUM" = "red", "SOFT" = "green")) + #set colors
+  theme_bw()
+```
+
+@fig-FastestLapCompound displays the 5 different drivers who had the 5 fastest laps in the Hungarian Grand Prix of 2024. Peaks in lines show a slower lap, while dips show a faster lap. All tire compounds were used in this sample, with soft tires being used the least overall. Among these 5 drivers, there is more variation in lap time, stints, stint number, and tire compound. The fastest lap time came from using soft tires, which happened right after Sargeant pitted for the third time in this race and switched. This is not a pattern followed by the other drivers. Overall, you can see that medium and soft achieved a faster lap, but the last third of the race was the fasted overall. An interesting thing to note about this graph is the fact that Sargeant went from having the slowest lap time, with hard compound tires, to the fastest lap time, with soft compound tires. Medium tires still showed the best performance, as supported by @fig-LapTime_TireAge, as those lines are overall lower than than the hard compound. It can also be seen that at the end of the race, when drivers are looking to get a faster lap, most drivers change to medium or soft. This was successful for Sargeant, as he achieved the fasted lap at the end of the race.
+
+## Comparing Distribution of Lap Times 
+
+Of all drivers who had the top fastest lap times recorded, there is great variation in lap number and what compound was used. Showing the distribution of lap time for each driver on each compound highlights the effectiveness of each tire and how variable each compound is.
+
+```{r}
+#| label: tbl-FastestLapCompoundDistribution
+#| tbl-cap: "Distribtuion of Drivers wiht the Fastest Lap on Each Compound"
+#| tbl-pos: "H"
+#| html-table-processing: none
+#| lst-label: lst-table1
+#| lst-cap: "Code Chunk for Making Table"
+#| 
+# Load Needed Packages
+library(kableExtra)
+library(knitr)
+library(tidyverse)
+library(dplyr)
+
+# Create the new Data Frame for the Table
+fastest_lapstat <- fastest_lap %>%
+  select( #eliminate unessecary columns 
+         -driver_number, 
+         -lap_number, 
+         -stint_number, 
+         -lap_start,
+         -lap_end, 
+         -tyre_age_at_start, 
+         -stint_length, 
+         -team_name, 
+         -first_name) %>%
+  group_by(last_name, compound) %>% #group name and compound variables together
+  summarise( #calculate the values for the data
+    Min = min(lap_duration, na.rm = TRUE),
+    Q1 = quantile(lap_duration, probs = 0.25, na.rm = TRUE),
+    Median = median(lap_duration, na.rm = TRUE),
+    Q3 = quantile(lap_duration, probs = 0.75, na.rm = TRUE),
+    Max = max(lap_duration, na.rm = TRUE),
+    Mean = mean(lap_duration, na.rm = TRUE),
+    Standard_Deviation = sd(lap_duration, na.rm = TRUE),
+    .groups = "drop"
+  )
+# Create new data set for the table
+fastest_lap_table <- fastest_lapstat
+
+# Rename column names to be more proper
+names(fastest_lap_table) <- c(
+  "Driver Last Name",
+  "Compound",
+  "Minimum",
+  "Quartile 1",
+  "Median",
+  "Quartile 3",
+  "Maximum",
+  "Mean",
+  "Standard Deviation"
+)
+# Create the table
+fastest_lap_table%>%
+  kable(
+    caption = "Summary Table for Top 5 Drivers with the Fastest Lap", #add captions
+    align = c("l", rep("c", 10)),
+    digits = 3 #round to 3 decimals
+  ) %>%
+  kable_classic(
+    font_size = 8, #edit font size
+    lightable_options = "striped" #make table easier to read and striped
+    )
+```
+
+@tbl-FastestLapCompoundDistribution displays various numbers showing the distribution of lap times for each driver and the compounds they used. All drivers used only medium and hard tires, except for Sargeant who used all three types of tire compound. For almost all drivers, the minimum lap time for medium tires was lower then the minimum time for hard tires. The average times for both tire compounds varied from driver to driver, with no specific compound out of the two having a lower lap time. To compare the overall performance of each tire, examine @fig-LapTime_TireAge, which will show the average of each tire compound for all drivers. The fastest lap was achieved by soft tires, with the mean being the lowest recorded. However it must be taken into account that this stint with the soft tires, as seen in @fig-FastestLapCompound, was the shortest recorded, and was the only driver who changed to soft tires, so there is no other driver data in the top 5 fastest lap to compare it to. Overall, it can be seen that medium tires are more effective for sustaining fast laps over longer periods of time in this race.
 
 # Race Strategy Insights and Conclusions
+
 Combining insights from tire age trends and driver lap times, we can conclude implications for race strategy. The data suggest which compounds offered the best balance of speed and durability, and how teams could optimize their tire choices during the race.
 
 **Medium Compound Dominance:** The medium tire compound provided the best overall lap times and consistent performance across stints.
@@ -142,9 +309,10 @@ Combining insights from tire age trends and driver lap times, we can conclude im
 Overall, the data creates a clear narrative: medium tires were the optimal choice at this race, balancing speed and durability, while the other compounds were either too fragile (soft) or too slow (hard) for maximum performance.
 
 # Author Contribution
-- **Kathryn Sujai:** 
-- **Ellie Wallace:** 
-- **Elisabeth Hadzic:** Data collection, cleaning, and wrangling. Figure 1 and Table 1 creation. 
+
+-   **Kathryn Sujai:**
+-   **Ellie Wallace:** Plan document, Figure 2 and table 2 creation. 
+-   **Elisabeth Hadzic:** Data collection, cleaning, and wrangling. Figure 1 and Table 1 creation.
 
 All authors contributed to creation of work-in-progress presentation and final report.
 
